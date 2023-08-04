@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MarvelFinder.Features.FavoritesList.FavoritesListPage"
+    Title="My Favorites"
+    BackgroundColor="White"
+    x:Name="Favorites">
+    <ContentPage.Content>
+        <StackLayout>
+            <ActivityIndicator HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               IsEnabled="{Binding IsBusy}"/>
+            <ListView x:Name="ComicList"
+                      ItemsSource="{Binding FavoritesListView}"
+                      SelectedItem="{Binding SelectedItem}"
+                      RowHeight="80"
+                      SeparatorVisibility="None"
+                      SelectionMode="Single"
+                      ItemSelected="ComicList_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell x:Name="ComicViewCell">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Remove Fav"
+                                                   BackgroundColor="DarkOrange"
+                                                   Command="{Binding Source={x:Reference Favorites}, Path=BindingContext.RemoveFavoriteCommand}"
+                                                   CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Grid HorizontalOptions="FillAndExpand"
+                                      VerticalOptions="FillAndExpand"
+                                      ColumnDefinitions="1.7*,8.3*"
+                                      Padding="5"
+                                      BackgroundColor="White">
+                                    <StackLayout Grid.Column="0"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center">
+                                        <Image Source="{Binding ImageThumbnail}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="70"
+                                                Aspect="AspectFit"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1"
+                                                    Orientation="Vertical"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="StartAndExpand"
+                                                    Padding="0,0,5,0">
+                                        <Label x:Name="Title"
+                                                Text="{Binding Title}"
+                                                FontSize="16"
+                                                FontAttributes="Bold"/>
+                                        <Label Text="{Binding CreatorsText}"
+                                                FontSize="10"
+                                                MaxLines="3"
+                                                LineBreakMode="TailTruncation"/>
+
+                                    </StackLayout>
+                                </Grid>
+                            </SwipeView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout> 
+    </ContentPage.Content>
+</ContentPage>
+
