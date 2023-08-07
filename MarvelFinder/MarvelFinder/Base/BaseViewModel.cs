@@ -23,6 +23,7 @@ namespace MarvelFinder.Base
 			{
 				_selectedItem = value;
 				RaiseOnPropertyChanged();
+                Debug.WriteLine($"New Selected Item -> {_selectedItem.Title}");
 			}
 		}
 
@@ -135,8 +136,13 @@ namespace MarvelFinder.Base
             }
         }
 
-        public async Task NavigateToComicDetail()
+        public async Task NavigateToComicDetail(MarvelComicItem item)
         {
+            if(SelectedItem == null || SelectedItem != item)
+            {
+                SelectedItem = item;
+            }
+
             try
             {
                 await Navigation.PushAsync(new ComicDetailsPage());

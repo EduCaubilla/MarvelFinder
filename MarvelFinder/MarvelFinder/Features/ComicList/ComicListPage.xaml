@@ -12,11 +12,10 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Favs"
-                     Clicked="ToolbarItem_Clicked"
                      Command="{Binding ShowFavoritesListCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="White">
             <StackLayout Margin="5,2,5,0">
                 <SearchBar x:Name="SearchBar"
                            HorizontalOptions="FillAndExpand"
@@ -31,37 +30,42 @@
                                VerticalOptions="CenterAndExpand"
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
-                               IsEnabled="{Binding IsBusy}"/>
-            <ListView x:Name="ComicList"
-                      ItemsSource="{Binding ComicList}"
-                      SelectedItem="{Binding SelectedItem}"
-                      RowHeight="80"
-                      SeparatorVisibility="None"
-                      SelectionMode="Single"
-                      ItemSelected="ComicList_ItemSelected">
-                <ListView.ItemTemplate>
+                               IsEnabled="{Binding IsBusy}"
+                               Margin="0,25"/>
+            <CollectionView x:Name="ComicList"
+                            ItemsSource="{Binding ComicList}"
+                            SelectedItem="{Binding SelectedItem}"
+                            SelectionMode="Single"
+                            VerticalOptions="FillAndExpand">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell x:Name="ComicViewCell">
+                        <StackLayout x:Name="ComicView">
                             <SwipeView>
                                 <SwipeView.RightItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Add Fav"
+                                        <SwipeItem Text="Add"
                                                    BackgroundColor="Green"
                                                    Command="{Binding Source={x:Reference Home}, Path=BindingContext.AddFavoriteCommand}"
                                                    CommandParameter="{Binding .}"
                                                    IsVisible="{Binding IsFavorite, Converter={StaticResource InverseBoolConverter}}">
                                         </SwipeItem>
-                                        <SwipeItem Text="Remove Fav"
-                                                   BackgroundColor="DarkOrange"
+                                        <SwipeItem Text="Remove"
+                                                   BackgroundColor="Red"
                                                    Command="{Binding Source={x:Reference Home}, Path=BindingContext.RemoveFavoriteCommand}"
-                                                   CommandParameter="{Binding .}"/>
+                                                   CommandParameter="{Binding .}"
+                                                   IsVisible="{Binding IsFavorite}"/>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
                                 <Grid HorizontalOptions="FillAndExpand"
                                       VerticalOptions="FillAndExpand"
                                       ColumnDefinitions="1.7*,8.3*"
                                       Padding="5"
-                                      BackgroundColor="White">
+                                      BackgroundColor="White"
+                                      HeightRequest="80">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference Home}, Path=BindingContext.NavigateToComicDetailCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
                                     <StackLayout Grid.Column="0"
                                                     HorizontalOptions="Center"
                                                     VerticalOptions="Center">
@@ -88,10 +92,10 @@
                                     </StackLayout>
                                 </Grid>
                             </SwipeView>
-                        </ViewCell>
+                        </StackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>     
     </ContentPage.Content>
 </ContentPage>

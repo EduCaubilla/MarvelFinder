@@ -2,32 +2,43 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:MarvelFinder.Converters"
     x:Class="MarvelFinder.Features.FavoritesList.FavoritesListPage"
     Title="My Favorites"
     BackgroundColor="White"
     x:Name="Favorites">
+    <ContentPage.Resources>
+        <converters:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter"/>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="White">
             <ActivityIndicator HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand"
+                               VerticalOptions="FillAndExpand"
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
-                               IsEnabled="{Binding IsBusy}"/>
-            <ListView x:Name="ComicList"
-                      ItemsSource="{Binding FavoritesListView}"
-                      SelectedItem="{Binding SelectedItem}"
-                      RowHeight="80"
-                      SeparatorVisibility="None"
-                      SelectionMode="Single"
-                      ItemSelected="ComicList_ItemSelected">
-                <ListView.ItemTemplate>
+                               IsEnabled="{Binding IsBusy}"
+                               Margin="0,25"/>
+            <Label HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="FillAndExpand"
+                   Text="The list is empty."
+                   FontSize="22"
+                   IsVisible="{Binding IsListEmpty}"
+                   IsEnabled="{Binding IsListEmpty}"
+                   Margin="0,25">
+            </Label>
+            <CollectionView x:Name="ComicList"
+                            ItemsSource="{Binding FavoritesListView}"
+                            SelectedItem="{Binding SelectedItem}"
+                            SelectionMode="Single">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell x:Name="ComicViewCell">
+                        <StackLayout x:Name="ComicView"
+                                     HeightRequest="80">
                             <SwipeView>
                                 <SwipeView.RightItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Remove Fav"
-                                                   BackgroundColor="DarkOrange"
+                                        <SwipeItem Text="Remove"
+                                                   BackgroundColor="Red"
                                                    Command="{Binding Source={x:Reference Favorites}, Path=BindingContext.RemoveFavoriteCommand}"
                                                    CommandParameter="{Binding .}"/>
                                     </SwipeItems>
@@ -37,6 +48,10 @@
                                       ColumnDefinitions="1.7*,8.3*"
                                       Padding="5"
                                       BackgroundColor="White">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference Favorites}, Path=BindingContext.NavigateToComicDetailCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
                                     <StackLayout Grid.Column="0"
                                                     HorizontalOptions="Center"
                                                     VerticalOptions="Center">
@@ -63,10 +78,10 @@
                                     </StackLayout>
                                 </Grid>
                             </SwipeView>
-                        </ViewCell>
+                        </StackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout> 
     </ContentPage.Content>
 </ContentPage>

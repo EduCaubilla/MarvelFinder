@@ -21,12 +21,6 @@ namespace MarvelFinder.Features.FavoritesList
 
             await vm.OnAppearing();
         }
-
-        void ComicList_ItemSelected(System.Object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
-        {
-            var vm = BindingContext as FavoritesListViewModel;
-            vm.NavigateToComicDetailCommand.Execute(null);
-        }
     }
 }
 

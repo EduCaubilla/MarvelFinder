@@ -30,18 +30,7 @@ namespace MarvelFinder.Features.ComicList
 			}
 		}
 
-        private ObservableCollection<MarvelComicItem> _comicListAux;
-        public ObservableCollection<MarvelComicItem> ComicListAux
-        {
-            get => _comicListAux;
-            set
-            {
-                _comicListAux = value;
-                RaiseOnPropertyChanged();
-            }
-        }
-
-        public ICommand NavigateToComicDetailCommand => new Command(async () => await NavigateToComicDetail());
+        public ICommand NavigateToComicDetailCommand => new Command<MarvelComicItem>(async (item) => await NavigateToComicDetail(item));
 
 		public ICommand SearchComicsCommand => new Command<string>(async (searchValue) => await SearchComics(searchValue));
 
@@ -63,11 +52,9 @@ namespace MarvelFinder.Features.ComicList
 			LoadFavoriteslist();
         }
 
-
-
 		private async Task SearchComics(string searchValue = "")
 		{
-			if (ComicList != null && searchValue == "") return;
+			if (ComicList != null && string.IsNullOrEmpty(searchValue)) return;
 
             ComicList = new ObservableCollection<MarvelComicItem>();
 
