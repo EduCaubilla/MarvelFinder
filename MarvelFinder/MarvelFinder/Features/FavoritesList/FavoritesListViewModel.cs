@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MarvelFinder.Base;
-using MarvelFinder.Features.ComicDetails;
-using MarvelFinder.Features.ComicList;
 using MarvelFinder.Models;
 using Xamarin.Forms;
 

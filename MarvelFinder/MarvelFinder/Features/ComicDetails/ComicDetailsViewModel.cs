@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using MarvelFinder.Base;
-using MarvelFinder.Models;
-using Xamarin.Essentials;
+﻿using MarvelFinder.Base;
 using Xamarin.Forms;
 
 namespace MarvelFinder.Features.ComicDetails

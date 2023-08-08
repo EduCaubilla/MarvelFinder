@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MarvelFinder.Base;
-using MarvelFinder.Features.ComicDetails;
 using MarvelFinder.Features.FavoritesList;
 using MarvelFinder.Models;
 using MarvelFinder.Services;
@@ -17,7 +15,7 @@ namespace MarvelFinder.Features.ComicList
 	public class ComicListViewModel : BaseViewModel
 	{
 
-		private RestService _restService;
+		private IRestService _restService;
 
         private ObservableCollection<MarvelComicItem> _comicList;
 		public ObservableCollection<MarvelComicItem> ComicList
@@ -41,9 +39,9 @@ namespace MarvelFinder.Features.ComicList
         public ICommand RemoveFavoriteCommand => new Command<MarvelComicItem>(async (item) => await RemoveFavoriteFromList(item));
 
 
-        public ComicListViewModel(INavigation navigation) : base(navigation)
+        public ComicListViewModel(INavigation navigation, IRestService restService) : base(navigation)
 		{
-			_restService = new RestService();
+			_restService = restService;
 		}
 
 		public async Task OnAppearing()
@@ -57,7 +55,7 @@ namespace MarvelFinder.Features.ComicList
         /// </summary>
         /// <param name="searchValue"></param>
         /// <returns></returns>
-		private async Task SearchComics(string searchValue = "")
+		public async Task SearchComics(string searchValue = "")
 		{
 			if (ComicList != null && string.IsNullOrEmpty(searchValue)) return;
 
@@ -69,11 +67,11 @@ namespace MarvelFinder.Features.ComicList
 
 			if(comicList == null || comicList.Count == 0)
 			{
-                await Application.Current.MainPage.DisplayAlert(
-                            "Request empty",
-                            $"Nothing found with the search \"{searchValue}\"." +
-                            "\nPlease try again with a different text.",
-                            "Accept");
+                //await Application.Current.MainPage.DisplayAlert(
+                //            "Request empty",
+                //            $"Nothing found with the search \"{searchValue}\"." +
+                //            "\nPlease try again with a different text.",
+                //            "Accept");
             }
 			else
 			{

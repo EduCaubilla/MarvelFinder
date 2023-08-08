@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MarvelFinder.Models;
-using Xamarin.Essentials;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
-using System.Text;
 using MarvelFinder.Mapper;
 using Newtonsoft.Json.Linq;
-using Xamarin.Forms;
 using System.Diagnostics;
 using MarvelFinder.Utils;
 
@@ -17,7 +13,6 @@ namespace MarvelFinder.Services
 {
 	public class RestService : IRestService
 	{
-
         private Tools _tools;
 
         public RestService()
@@ -38,7 +33,7 @@ namespace MarvelFinder.Services
             var paramTs = $"ts={Constants.API_TIMESTAMP}";
             var apiKey = $"&apikey={Constants.API_KEY}"; 
 
-            var hash = _tools.CreateMD5Hash(stringToHash);
+            var hash = Tools.CreateMD5Hash(stringToHash);
             var paramHash = $"&hash={hash}"; 
 
             var orderBy = "&orderBy=-focDate";
@@ -58,7 +53,7 @@ namespace MarvelFinder.Services
 
             using (HttpClient client = new HttpClient())
             {
-                if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                if (_tools.IsConnected)
                 {
                     Uri requestUri = new Uri(reqUri);
                     try
@@ -87,31 +82,31 @@ namespace MarvelFinder.Services
                         }
                         else
                         {
-                            await Application.Current.MainPage.DisplayAlert(
-                            "Request error",
-                            "There was an error calling the API. " +
-                            "\nPlease try again later.",
-                            "Accept");
+                            //await Application.Current.MainPage.DisplayAlert(
+                            //"Request error",
+                            //"There was an error calling the API. " +
+                            //"\nPlease try again later.",
+                            //"Accept");
                             Debug.WriteLine("API call failed: " + response);
                         }
                     }
                     catch(Exception ex)
                     {
-                        await Application.Current.MainPage.DisplayAlert(
-                            "Server error",
-                            "No response received from the server. " +
-                            "\nPlease try again later.",
-                            "Accept");
+                        //await Application.Current.MainPage.DisplayAlert(
+                        //    "Server error",
+                        //    "No response received from the server. " +
+                        //    "\nPlease try again later.",
+                        //    "Accept");
                         Debug.WriteLine("API call failed: " + ex);
                     }
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert(
-                            "Network error",
-                            "Network service was not detected. " +
-                            "\nPlease check you connection.",
-                            "Accept");
+                    //await Application.Current.MainPage.DisplayAlert(
+                    //        "Network error",
+                    //        "Network service was not detected. " +
+                    //        "\nPlease check you connection.",
+                    //        "Accept");
                 }
             }
 

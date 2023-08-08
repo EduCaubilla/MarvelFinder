@@ -1,16 +1,19 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using Plugin.Connectivity;
 
 namespace MarvelFinder.Utils
 {
 	public class Tools
 	{
-		public Tools()
-		{
-		}
+        public bool IsConnected;
 
-        public string CreateMD5Hash(string input)
+        public Tools()
+		{
+            IsConnected = CrossConnectivity.Current.IsConnected;
+        }
+
+        public static string CreateMD5Hash(string input)
         {
             // Step 1, calculate MD5 hash from input
             MD5 md5 = System.Security.Cryptography.MD5.Create();
