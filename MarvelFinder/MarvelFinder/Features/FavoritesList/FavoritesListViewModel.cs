@@ -48,19 +48,28 @@ namespace MarvelFinder.Features.FavoritesList
 
         public async Task OnAppearing()
         {
-            IsBusy = true;
             await LoadFavoriteslistForView();
-            IsBusy = false;
         }
 
+        /// <summary>
+        /// Calls to base to remove an item from the favorites main list
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private async Task RemoveFavoriteItem(MarvelComicItem item)
         {
             await RemoveFavorite(item);
             await LoadFavoriteslistForView();
         }
 
+        /// <summary>
+        /// Gets the list of favorites from the local database to show in the view
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadFavoriteslistForView()
         {
+            IsBusy = true;
+
             FavoritesListView = new ObservableCollection<MarvelComicItem>();
 
             var favoritesListDB = await App.Database.GetFavoritesListAsync();
@@ -68,6 +77,7 @@ namespace MarvelFinder.Features.FavoritesList
             if (favoritesListDB.Count == 0)
             {
                 FavoritesListView = new ObservableCollection<MarvelComicItem>();
+                IsBusy = false;
                 return;
             }
 
@@ -75,6 +85,8 @@ namespace MarvelFinder.Features.FavoritesList
 
             FavoritesListView = new ObservableCollection<MarvelComicItem>(favoritesListDB);
             FavoritesList = FavoritesListView;
+
+            IsBusy = false;
         }
     }
 }

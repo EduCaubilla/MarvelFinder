@@ -17,35 +17,33 @@ namespace MarvelFinder.Services
 {
 	public class RestService : IRestService
 	{
-        private Constants _constants;
-        public Constants Constants
-        {
-            get => _constants;
-            set
-            {
-                _constants = value;
-            }
-        }
+
+        private Tools _tools;
 
         public RestService()
 		{
-            _constants = new Constants();
+            _tools = new Tools();
 		}
 
+        /// <summary>
+        /// Gets a list of comics from the marvel api
+        /// </summary>
+        /// <param name="searchValue">String with the searched word</param>
+        /// <returns>List of comics</returns>
         public async Task<List<MarvelComicItem>> GetComicList(string searchValue = "")
         {
             var stringToHash = Constants.API_TIMESTAMP + Constants.API_PRIVATE_KEY + Constants.API_KEY;
 
             var baseUri = Constants.BASE_URI;
             var paramTs = $"ts={Constants.API_TIMESTAMP}";
-            var apiKey = $"&apikey={Constants.API_KEY}";
+            var apiKey = $"&apikey={Constants.API_KEY}"; 
 
-            var hash = CreateMD5Hash(stringToHash);
-            var paramHash = $"&hash={hash}";
+            var hash = _tools.CreateMD5Hash(stringToHash);
+            var paramHash = $"&hash={hash}"; 
 
             var orderBy = "&orderBy=-focDate";
             var noVariants = "&noVariants=true";
-            var limit = "&limit=100";
+            var limit = "&limit=50";
 
             var reqUri = $"{baseUri}{paramTs}{apiKey}{paramHash}{orderBy}{noVariants}{limit}";
 
@@ -118,22 +116,6 @@ namespace MarvelFinder.Services
             }
 
             return null;
-        }
-
-        public string CreateMD5Hash(string input)
-        {
-            // Step 1, calculate MD5 hash from input
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            // Step 2, convert byte array to hex string
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("x2"));
-            }
-            return sb.ToString();
         }
     }
 }

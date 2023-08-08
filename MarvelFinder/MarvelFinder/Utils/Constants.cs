@@ -9,7 +9,7 @@ namespace MarvelFinder.Utils
 	{
 		public const string BASE_URI = "https://gateway.marvel.com/v1/public/comics?";
 
-        public string API_TIMESTAMP = DateTime.Now.TimeOfDay.Ticks.ToString();
+        public static string API_TIMESTAMP = DateTime.Now.TimeOfDay.Ticks.ToString();
 
         public const string API_KEY = "86340172b5b3d3661d131ae626154fa3";
 

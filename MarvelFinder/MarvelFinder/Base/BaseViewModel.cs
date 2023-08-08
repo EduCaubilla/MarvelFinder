@@ -23,7 +23,6 @@ namespace MarvelFinder.Base
 			{
 				_selectedItem = value;
 				RaiseOnPropertyChanged();
-                Debug.WriteLine($"New Selected Item -> {_selectedItem.Title}");
 			}
 		}
 
@@ -46,7 +45,6 @@ namespace MarvelFinder.Base
             {
                 _favoritesList = value;
                 RaiseOnPropertyChanged();
-                Debug.WriteLine("FavoritesList Changed ->" + FavoritesList.Count);
             }
         }
 
@@ -55,6 +53,11 @@ namespace MarvelFinder.Base
             Navigation = navigation;
         }
 
+        /// <summary>
+        /// Saves the favorite item in the local database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task AddFavorite(MarvelComicItem item)
         {
             item.IsFavorite = true;
@@ -97,6 +100,11 @@ namespace MarvelFinder.Base
 
         }
 
+        /// <summary>
+        /// Deletes the given item from the database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task RemoveFavorite(MarvelComicItem item)
         {
             MarvelComicItem itemInFavList = null;
@@ -136,6 +144,11 @@ namespace MarvelFinder.Base
             }
         }
 
+        /// <summary>
+        /// Navigation to the comic detail view
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task NavigateToComicDetail(MarvelComicItem item)
         {
             if(SelectedItem == null || SelectedItem != item)

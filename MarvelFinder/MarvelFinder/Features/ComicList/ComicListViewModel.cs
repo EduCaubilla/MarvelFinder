@@ -52,6 +52,11 @@ namespace MarvelFinder.Features.ComicList
 			LoadFavoriteslist();
         }
 
+        /// <summary>
+        /// Gets a list of marvel comics from the search and put it in the collection binded to the main view
+        /// </summary>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
 		private async Task SearchComics(string searchValue = "")
 		{
 			if (ComicList != null && string.IsNullOrEmpty(searchValue)) return;
@@ -78,6 +83,9 @@ namespace MarvelFinder.Features.ComicList
 			IsBusy = false;
 		}
 
+        /// <summary>
+        /// Gets the list of favorites form local db and put it in the collection binded to the view related
+        /// </summary>
         public async void LoadFavoriteslist()
 		{
             FavoritesList = new ObservableCollection<MarvelComicItem>();
@@ -93,6 +101,10 @@ namespace MarvelFinder.Features.ComicList
             CheckComicsListForFavs();
         }
 
+        /// <summary>
+        /// Cross check the favorites list with the search list to mark favs in the last one
+        /// and disallow add only allowing remove from favorites list
+        /// </summary>
         private void CheckComicsListForFavs()
         {
             var newComicList = ComicList.ToList();
@@ -116,6 +128,9 @@ namespace MarvelFinder.Features.ComicList
             ComicList = new ObservableCollection<MarvelComicItem>(newComicList);
         }
 
+        /// <summary>
+        /// Navigation to favorites list page
+        /// </summary>
         private async void ShowFavorites()
 		{
             try
@@ -128,12 +143,22 @@ namespace MarvelFinder.Features.ComicList
             }
         }
 
+        /// <summary>
+        /// Calls to the BaseViewModel to add the item to the main favorites list
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private async Task AddFavoriteToList(MarvelComicItem item)
         {
             await AddFavorite(item);
             CheckComicsListForFavs();
         }
 
+        /// <summary>
+        /// Calls to the BaseViewModel remove the item from the main favorites list
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private async Task RemoveFavoriteFromList(MarvelComicItem item)
         {
             await RemoveFavorite(item);

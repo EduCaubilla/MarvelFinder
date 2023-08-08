@@ -10,9 +10,10 @@ namespace MarvelFinder
     public partial class App : Application
     {
 
-        //Inicio base de datos
+        /// <summary>
+        /// Local database connection - singleton
+        /// </summary>
         private static Database database;
-
         public static Database Database
         {
             get
