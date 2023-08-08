@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MarvelFinder.Features.ComicDetails;
 using MarvelFinder.Models;
+using MarvelFinder.Utils;
 using Xamarin.Forms; 
 
 namespace MarvelFinder.Base
@@ -14,6 +15,7 @@ namespace MarvelFinder.Base
 	public class BaseViewModel : INotifyPropertyChanged
 	{
 		public INavigation Navigation { get; set; }
+        private Tools _tools;
 
 		public static MarvelComicItem _selectedItem;
 		public MarvelComicItem SelectedItem
@@ -51,6 +53,7 @@ namespace MarvelFinder.Base
         public BaseViewModel(INavigation navigation)
         {
             Navigation = navigation;
+            _tools = new Tools();
         }
 
         /// <summary>
@@ -64,11 +67,10 @@ namespace MarvelFinder.Base
 
             if(FavoritesList.Count > 0)
             {
-                var favItemIndex = FavoritesList.ToList().Select(fav => fav.Title == item.Title).First();
-                if (favItemIndex)
+                var isAlreadyFav = FavoritesList.ToList().Select(fav => fav.Title == item.Title).First();
+                if (isAlreadyFav)
                 {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Item already saved",
+                    _tools.DisplayMessage("Item already saved",
                         $"The comic with title \"{item.Title}\" is already on your favorites list.",
                         "Accept");
                     return;
@@ -82,7 +84,7 @@ namespace MarvelFinder.Base
                 var FavoritesAux = await App.Database.GetFavoritesListAsync();
                 FavoritesList = new ObservableCollection<MarvelComicItem>(FavoritesAux);
 
-                await Application.Current.MainPage.DisplayAlert(
+                _tools.DisplayMessage(
                     "Item saved successfully",
                     $"The comic with title \"{item.Title}\" was added to the favorites list.",
                     "Accept");
@@ -91,13 +93,12 @@ namespace MarvelFinder.Base
             {
                 Debug.WriteLine($"Error on saving item to database");
 
-                await Application.Current.MainPage.DisplayAlert(
+                _tools.DisplayMessage(
                             "Database Error Saving",
                             $"The comic with title \"{item.Title}\" couldn't be saved." +
                             "\nPlease try again later or restart the app.",
                             "Accept");
             }
-
         }
 
         /// <summary>
@@ -122,11 +123,10 @@ namespace MarvelFinder.Base
 
                 if (result > 0)
                 {
-                    var FavoritesAux = FavoritesList;
-                    FavoritesAux.ToList().Remove(item);
+                    var FavoritesAux = await App.Database.GetFavoritesListAsync();
                     FavoritesList = new ObservableCollection<MarvelComicItem>(FavoritesAux);
 
-                    await Application.Current.MainPage.DisplayAlert(
+                    _tools.DisplayMessage(
                     "Item removed",
                     $"The comic with title \"{item.Title}\" was deleted to the favorites list.",
                     "Accept");
@@ -135,7 +135,7 @@ namespace MarvelFinder.Base
                 {
                     Debug.WriteLine($"Error on deleting item from database");
 
-                    await Application.Current.MainPage.DisplayAlert(
+                    _tools.DisplayMessage(
                             "Database Error Deleting",
                             $"The comic with title \"{item.Title}\" couldn't be deleted." +
                             "\nPlease try again later or restart the app.",

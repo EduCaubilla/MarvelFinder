@@ -1,15 +1,12 @@
-﻿using System;
-using System.IO;
-using MarvelFinder.Data;
+﻿using MarvelFinder.Data;
 using MarvelFinder.Features.ComicList;
-using Xamarin.Essentials;
+using MarvelFinder.Utils;
 using Xamarin.Forms;
 
 namespace MarvelFinder
 {
     public partial class App : Application
     {
-
         /// <summary>
         /// Local database connection - singleton
         /// </summary>
@@ -18,9 +15,7 @@ namespace MarvelFinder
         {
             get
             {
-                var basePath = Path.Combine(FileSystem.AppDataDirectory, "FlightAppData.db3");
-                if (database == null) database = new Database(basePath);
-
+                if (database == null) database = new Database(Constants.DatabasePath);
                 return database;
             }
         }

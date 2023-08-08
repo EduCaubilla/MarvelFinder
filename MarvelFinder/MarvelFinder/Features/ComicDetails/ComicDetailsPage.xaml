@@ -11,6 +11,11 @@
         <converters:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter"/>
         <converters:StringFormattedDateConverter x:Key="StringFormattedDateConverter"/>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add"
+                     Command="{Binding AddFavoriteCommand}"
+                     CommandParameter="{Binding SelectedItem}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Margin="10"

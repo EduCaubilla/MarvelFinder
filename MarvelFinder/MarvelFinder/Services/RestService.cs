@@ -8,6 +8,7 @@ using MarvelFinder.Mapper;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using MarvelFinder.Utils;
+using Xamarin.Forms;
 
 namespace MarvelFinder.Services
 {
@@ -38,7 +39,7 @@ namespace MarvelFinder.Services
 
             var orderBy = "&orderBy=-focDate";
             var noVariants = "&noVariants=true";
-            var limit = "&limit=50";
+            var limit = $"&limit={Constants.API_REQUEST_LIMIT}";
 
             var reqUri = $"{baseUri}{paramTs}{apiKey}{paramHash}{orderBy}{noVariants}{limit}";
 
@@ -82,31 +83,31 @@ namespace MarvelFinder.Services
                         }
                         else
                         {
-                            //await Application.Current.MainPage.DisplayAlert(
-                            //"Request error",
-                            //"There was an error calling the API. " +
-                            //"\nPlease try again later.",
-                            //"Accept");
+                            await Application.Current.MainPage.DisplayAlert(
+                            "Request error",
+                            "There was an error calling the API. " +
+                            "\nPlease try again later.",
+                            "Accept");
                             Debug.WriteLine("API call failed: " + response);
                         }
                     }
                     catch(Exception ex)
                     {
-                        //await Application.Current.MainPage.DisplayAlert(
-                        //    "Server error",
-                        //    "No response received from the server. " +
-                        //    "\nPlease try again later.",
-                        //    "Accept");
+                        await Application.Current.MainPage.DisplayAlert(
+                            "Server error",
+                            "No response received from the server. " +
+                            "\nPlease try again later.",
+                            "Accept");
                         Debug.WriteLine("API call failed: " + ex);
                     }
                 }
                 else
                 {
-                    //await Application.Current.MainPage.DisplayAlert(
-                    //        "Network error",
-                    //        "Network service was not detected. " +
-                    //        "\nPlease check you connection.",
-                    //        "Accept");
+                    await Application.Current.MainPage.DisplayAlert(
+                            "Network error",
+                            "Network service was not detected. " +
+                            "\nPlease check you connection.",
+                            "Accept");
                 }
             }
 

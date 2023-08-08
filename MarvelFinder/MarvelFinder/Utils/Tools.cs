@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using Plugin.Connectivity;
+using Xamarin.Forms;
 
 namespace MarvelFinder.Utils
 {
@@ -16,8 +17,8 @@ namespace MarvelFinder.Utils
         public static string CreateMD5Hash(string input)
         {
             // Step 1, calculate MD5 hash from input
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
             byte[] hashBytes = md5.ComputeHash(inputBytes);
 
             // Step 2, convert byte array to hex string
@@ -27,6 +28,12 @@ namespace MarvelFinder.Utils
                 sb.Append(hashBytes[i].ToString("x2"));
             }
             return sb.ToString();
+        }
+
+        public async void DisplayMessage(string title, string content, string buttonAccept)
+        {
+            if (Application.Current == null) return;
+            await Application.Current.MainPage.DisplayAlert(title, content, buttonAccept);
         }
     }
 }

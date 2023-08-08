@@ -8,6 +8,7 @@ using MarvelFinder.Base;
 using MarvelFinder.Features.FavoritesList;
 using MarvelFinder.Models;
 using MarvelFinder.Services;
+using MarvelFinder.Utils;
 using Xamarin.Forms;
 
 namespace MarvelFinder.Features.ComicList
@@ -16,6 +17,7 @@ namespace MarvelFinder.Features.ComicList
 	{
 
 		private IRestService _restService;
+        private Tools _tools;
 
         private ObservableCollection<MarvelComicItem> _comicList;
 		public ObservableCollection<MarvelComicItem> ComicList
@@ -42,6 +44,7 @@ namespace MarvelFinder.Features.ComicList
         public ComicListViewModel(INavigation navigation, IRestService restService) : base(navigation)
 		{
 			_restService = restService;
+            _tools = new Tools();
 		}
 
 		public async Task OnAppearing()
@@ -67,11 +70,11 @@ namespace MarvelFinder.Features.ComicList
 
 			if(comicList == null || comicList.Count == 0)
 			{
-                //await Application.Current.MainPage.DisplayAlert(
-                //            "Request empty",
-                //            $"Nothing found with the search \"{searchValue}\"." +
-                //            "\nPlease try again with a different text.",
-                //            "Accept");
+                _tools.DisplayMessage(
+                            "Request empty",
+                            $"Nothing found with the search \"{searchValue}\"." +
+                            "\nPlease try again with a different text.",
+                            "Accept");
             }
 			else
 			{
